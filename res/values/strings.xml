@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="buttontext2">Start</string>
+    <string name="buttontext"/>
+    <string name="hello">Hello World, Controller!</string>
+    <string name="app_name">Measurement Collector</string>
+	<string name="settingsbuttontext">Settings</string>
+	<string name="quitbuttontext">Quit</string>
+	<string name="usersample">Save Timestamp</string>	
+	<string name="mapgroundtruthbuttontext">Map Ground Truth</string>	
+<string name="settings_title">Settings</string>
+</resources>

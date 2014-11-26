@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android" 
+  android:orderingFromXml="true">
+
+<PreferenceCategory android:title="Main">
+	<CheckBoxPreference
+			android:summaryOff="Off: All loggers log to their own files." 
+			android:disableDependentsState="false" 
+			android:key="combined" 
+			android:title="Combined log file" 
+			android:defaultValue="true"
+			android:summaryOn="On: All loggers log results to a shared file." />
+
+	<CheckBoxPreference 
+			android:summaryOff="Off: Loggers use their own timers." 
+			android:disableDependentsState="false" 
+			android:key="synchronized" 
+			android:title="Synchronized logging" 
+			android:defaultValue="false"
+			android:summaryOn="On: All loggers report results at the same time." />
+	
+	<CheckBoxPreference 
+			android:summaryOff="Device Info logging turned off" 
+			android:disableDependentsState="false" 
+			android:key="deviceInfo" 
+			android:title="Device Info" 
+			android:defaultValue="true"
+			android:summaryOn="Log Device Information" />
+	
+			
+	<EditTextPreference 
+			android:summary="Sampling rate for synchronized loggers." 
+			android:title="Sampling rate (sec)" 
+			android:dependency="synchronized"
+			android:key="shared_interval" 
+			android:numeric="integer" 
+			android:defaultValue="0" />
+	<Preference 
+			android:summary="Folder for storing log files." 
+			android:title="Output folder" 
+			android:key="output_folder"/>
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Location">
+	<CheckBoxPreference 
+			android:summaryOff="GPS sampling turned off" 
+			android:disableDependentsState="false" 
+			android:key="gps" 
+			android:title="GPS" 
+			android:defaultValue="false"
+			android:summaryOn="Logs GPS data" />
+
+	<CheckBoxPreference 
+			android:summaryOff="Signal to Noise logging is turned off" 
+			android:disableDependentsState="false" 
+			android:key="snr" 
+			android:title="SNR" 
+			android:defaultValue="false"
+			android:summaryOn="Logs Signal to Noise data" />
+			
+    <CheckBoxPreference 
+			android:summaryOff="NMEA messages logging is turned off" 
+			android:disableDependentsState="false" 
+			android:key="nmea" 
+			android:title="NMEA" 
+			android:defaultValue="false"
+			android:summaryOn="Logs NMEA messages" />
+
+    <CheckBoxPreference 
+			android:summaryOff="Network locations logging is turned off" 
+			android:disableDependentsState="false" 
+			android:key="networkLocation" 
+			android:title="Network Location" 
+			android:defaultValue="false"
+			android:summaryOn="Logs network locations" />
+
+	<EditTextPreference 
+			android:summary="Location sampling rate (sec)" 
+			android:title="Sampling rate" 
+			android:key="samplerate_location" 
+			android:numeric="integer" 
+			android:defaultValue="0" 
+			/>
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Wifi">
+	<CheckBoxPreference 
+			android:summaryOff="Wifi sampling turned off" 
+			android:disableDependentsState="false" 
+			android:key="wifi" 
+			android:title="WiFi" 
+			android:defaultValue="false"
+			android:summaryOn="Logs Wifi data" />
+
+	<EditTextPreference 
+			android:summary="Wifi sampling rate (sec)" 
+			android:title="Sampling rate" 
+			android:key="samplerate_wifi" 
+			android:defaultValue="0" 
+			android:numeric="integer" 
+			android:dependency="wifi"
+			/>
+</PreferenceCategory>
+  
+<PreferenceCategory android:title="GSM">
+	<CheckBoxPreference 
+			android:summaryOff="GSM sampling turned off" 
+			android:disableDependentsState="false" 
+			android:key="gsm" 
+			android:title="GSM" 
+			android:defaultValue="false"
+			android:summaryOn="Logs GSM data" />
+
+	<EditTextPreference 
+			android:summary="GSM sampling rate (sec)" 
+			android:title="Sampling rate" 
+			android:key="samplerate_gsm" 
+			android:defaultValue="0" 
+			android:dependency="gsm" android:numeric="integer"/>
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Sensor">
+
+	<CheckBoxPreference 
+			android:summaryOff="Magnetometer turned off" 
+			android:disableDependentsState="false" 
+			android:key="magnetometer" 
+			android:title="Magnetometer" 
+			android:defaultValue="true"
+			android:summaryOn="Logs magnetometer data" />
+
+	<CheckBoxPreference 
+			android:summaryOff="Accelerometer turned off" 
+			android:disableDependentsState="false" 
+			android:key="accelerometer" 
+			android:title="Accelerometer" 
+			android:defaultValue="true"
+			android:summaryOn="Logs accelerometer data" />
+	
+	<CheckBoxPreference 
+			android:summaryOff="Gyroscope turned off" 
+			android:disableDependentsState="false" 
+			android:key="gyroscope" 
+			android:title="Gyroscope" 
+			android:defaultValue="true"
+			android:summaryOn="Logs gyroscope data" />
+
+	<CheckBoxPreference 
+			android:summaryOff="Orientation logging turned off" 
+			android:disableDependentsState="false" 
+			android:key="orientation" 
+			android:title="Orientation" 
+			android:defaultValue="false"
+			android:summaryOn="Logs orientation data" />
+
+	<EditTextPreference 
+			android:summary="Sensor sampling rate (sec)" 
+			android:title="Sampling rate" 
+			android:key="samplerate_sensor" 
+			android:defaultValue="0" 
+			android:numeric="integer" />
+</PreferenceCategory>
+
+<PreferenceCategory android:title="User driven">
+	<CheckBoxPreference 
+			android:disableDependentsState="false" 
+			android:key="userTimestamp" 
+			android:title="User Timestamp" 
+			android:defaultValue="false"
+			android:summaryOn="Button for saving timestamps is enabled" 
+			android:summaryOff="Button for saving timestamps is disabled" />
+	<CheckBoxPreference 
+			android:disableDependentsState="false" 
+			android:key="buttonEvent" 
+			android:title="Button Events" 
+			android:defaultValue="true"
+			android:summaryOn="Button events are enabled" 
+			android:summaryOff="Button events are disabled" />
+	<EditTextPreference 
+			android:summary="Button events, separated by semicolons" 
+			android:title="Button event list" 
+			android:key="buttonEventList" 
+			android:defaultValue="EXP1;EXP2;EXP3" 
+			android:dependency="buttonEvent" />
+	<CheckBoxPreference 
+			android:disableDependentsState="false" 
+			android:key="mapGroundTruth" 
+			android:title="Map ground truth" 
+			android:defaultValue="false"
+			android:summaryOn="Button for mapping ground truth is enabled" 
+			android:summaryOff="Button for mapping ground truth is disabled" />
+	<EditTextPreference 
+			android:summary="Sampling time per click (sec)" 
+			android:title="Sampling Time" 
+			android:key="sampletime" 
+			android:defaultValue="30" 
+			android:numeric="integer"
+			android:dependency="mapGroundTruth" />	
+	<CheckBoxPreference 
+			android:disableDependentsState="false" 
+			android:key="voice" 
+			android:title="Voice recording" 
+			android:defaultValue="false"
+			android:summaryOn="Button for recording is enabled" 
+			android:summaryOff="Button for recording is disabled" />
+	<CheckBoxPreference  
+			android:key="vibrator" 
+			android:title="Vibration Feedback" 
+			android:defaultValue="false"
+			android:dependency="voice"
+			android:summaryOn="Vibration feedback when recording is enabled" 
+			android:summaryOff="Vibration feedback when recording is disabled" />
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Time">
+	<CheckBoxPreference 
+			android:disableDependentsState="false" 
+			android:key="ntp" 
+			android:title="NTP Synchronization" 
+			android:defaultValue="true"
+			android:summaryOn="NTP is enabled" 
+			android:summaryOff="NTP is disabled" android:summary="Should the local time be synched with NTP?"/>
+</PreferenceCategory>
+
+</PreferenceScreen>

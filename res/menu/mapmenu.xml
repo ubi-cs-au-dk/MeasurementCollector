@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/clearGroundTruth" android:visible="true" android:enabled="true" android:titleCondensed="Clear Ground Truth" android:checkable="false" android:title="Clear Ground Truth"></item>
+    <item android:id="@+id/clearPoints" android:visible="true" android:enabled="true" android:titleCondensed="Clear Sampled Points" android:checkable="false" android:title="Clear Sampled Points"></item>
+    <item android:id="@+id/clearMarkedPoints" android:visible="true" android:enabled="true" android:titleCondensed="Clear Marked Points" android:checkable="false" android:title="Clear Marked Points"></item>
+    <item android:id="@+id/saveMarkedPoints" android:visible="true" android:enabled="true" android:titleCondensed="Save Marked Points" android:checkable="false" android:title="Save Marked Points"></item>
+    <item android:id="@+id/selectMap" android:visible="true" android:enabled="true" android:titleCondensed="Select Map" android:checkable="false" android:title="Select Map"></item>  
+        
+</menu>

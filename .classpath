@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="libs/PerPosDroidLibrary.jar"/>
+	<classpathentry kind="lib" path="libs/Jama-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/geoapi-nogenerics-2.1.0.jar"/>
+	<classpathentry kind="lib" path="libs/gt2-referencing-2.4.4.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

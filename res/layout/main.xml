@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    android:key="@+id/preferenceScreen"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buttontext2"
+        android:enabled="false" />
+
+    <LinearLayout
+        android:id="@+id/contentlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/UserTimestampButtonView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            
+            android:gravity="center_vertical" >
+
+            <Button
+                android:id="@+id/UserTimestampButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/usersample" />
+        </LinearLayout>
+
+        <LinearLayout
+         android:id="@+id/flowLayoutView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical"            
+            android:gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/MapButtonView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical" 
+            
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/MapButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mapgroundtruthbuttontext" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/VoiceButtonView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="vertical" 
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/VoiceButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+      
+    </LinearLayout>
+    <Button
+                android:id="@+id/SendButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Send data"/>
+
+</LinearLayout>
