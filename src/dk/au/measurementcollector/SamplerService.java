@@ -24,19 +24,18 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Binder;
-import android.os.Environment;
-import android.os.IBinder;
-import android.os.Vibrator;
+import android.os.*;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import dk.au.measurementcollector.loggers.*;
 import dk.au.measurementcollector.utils.HandsetButtonReceiver;
 import dk.au.measurementcollector.utils.HandsetButtonReceiver.HandsetButtonListener;
 import dk.au.measurementcollector.utils.NTPSync;
+import dk.au.measurementcollector.writers.ASyncLogWriter;
+import dk.au.measurementcollector.writers.LogWriter;
+import dk.au.measurementcollector.writers.StandardLogWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,10 +173,10 @@ public class SamplerService extends Service {
 				Toaster.showToast("Error: Unknown error with NTP sync");
 			}
         }
-        LogWriter combinedWriter = new StandardLogWriter("samples", outputFolder, true, timeOffset);
+        LogWriter combinedWriter = new ASyncLogWriter("samples", outputFolder, true, timeOffset);
 		// GPS
 		if (gps || snr || nmea) {
-	        gpsLogger = new GPSLogger(this, new StandardLogWriter("experiement_gps", outputFolder, false, timeOffset));
+	        gpsLogger = new GPSLogger(this, new ASyncLogWriter("experiement_gps", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_LOCATION, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) gpsLogger.setLogWriter(combinedWriter);
@@ -191,7 +190,7 @@ public class SamplerService extends Service {
 
 		// Network location
 		if (networkLocation) {
-			networkLocationLogger = new NetworkLocationLogger(this, new StandardLogWriter("experiement_networklocation", outputFolder, false, timeOffset));
+			networkLocationLogger = new NetworkLocationLogger(this, new ASyncLogWriter("experiement_networklocation", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_LOCATION, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) networkLocationLogger.setLogWriter(combinedWriter);
@@ -202,7 +201,7 @@ public class SamplerService extends Service {
 		
 		// Wifi
 		if (wifi) {
-	        wifiLogger = new WifiLogger(this, new StandardLogWriter("experiement_wifi", outputFolder, false, timeOffset));
+	        wifiLogger = new WifiLogger(this, new ASyncLogWriter("experiement_wifi", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_WIFI, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) wifiLogger.setLogWriter(combinedWriter);
@@ -213,7 +212,7 @@ public class SamplerService extends Service {
 		
 		// GSM
 		if (gsm) {
-	        gsmLogger = new GSMLogger(this, new StandardLogWriter("experiement_gsm", outputFolder, false, timeOffset));
+	        gsmLogger = new GSMLogger(this, new ASyncLogWriter("experiement_gsm", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_GSM, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) gsmLogger.setLogWriter(combinedWriter);
@@ -224,7 +223,7 @@ public class SamplerService extends Service {
 		
 		// Sensors
 		if (magnetometer) {
-			magnetometerLogger = new MagnetometerLogger(this, new StandardLogWriter("sensor_magnetometer", outputFolder, false, timeOffset));
+			magnetometerLogger = new MagnetometerLogger(this, new ASyncLogWriter("sensor_magnetometer", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_SENSOR, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) magnetometerLogger.setLogWriter(combinedWriter);
@@ -235,7 +234,7 @@ public class SamplerService extends Service {
 		}
 
 		if (accelerometer) {
-			accelerometerLogger = new AccelerometerLogger(this, new StandardLogWriter("sensor_accelerometer", outputFolder, false, timeOffset));
+			accelerometerLogger = new AccelerometerLogger(this, new ASyncLogWriter("sensor_accelerometer", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_SENSOR, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) accelerometerLogger.setLogWriter(combinedWriter);
@@ -246,7 +245,7 @@ public class SamplerService extends Service {
 		}
 		
 		if (gyroscope) {
-			gyroscopeLogger = new GyroscopeLogger(this, new StandardLogWriter("sensor_gyroscope", outputFolder, false, timeOffset));
+			gyroscopeLogger = new GyroscopeLogger(this, new ASyncLogWriter("sensor_gyroscope", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_SENSOR, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) gyroscopeLogger.setLogWriter(combinedWriter);
@@ -264,7 +263,7 @@ public class SamplerService extends Service {
 		}
 
 		if (orientation) {
-			orientationLogger = new OrientationLogger(this, new StandardLogWriter("sensor_orientation", outputFolder, false, timeOffset));
+			orientationLogger = new OrientationLogger(this, new ASyncLogWriter("sensor_orientation", outputFolder, false, timeOffset));
 			sampleRate = new Integer(preferences.getString(CollectorPreferencesActivity.SAMPLERATE_SENSOR, "0"));
 			if (isSynched) sampleRate = syncedSampleRate;
 			if (isCombined) orientationLogger.setLogWriter(combinedWriter);
@@ -274,21 +273,21 @@ public class SamplerService extends Service {
 		}
 		
 		if (userTimestamp) {
-			userTimestampLogger = new UserTimestampLogger(this, new StandardLogWriter("user_timestamp", outputFolder, false, timeOffset));
+			userTimestampLogger = new UserTimestampLogger(this, new ASyncLogWriter("user_timestamp", outputFolder, false, timeOffset));
 			if (isCombined) userTimestampLogger.setLogWriter(combinedWriter);
 			userTimestampLogger.setTimeOffset(timeOffset);
 			userTimestampLogger.start();
 		}
 		
 		if (buttonEvent) {
-			buttonEventLogger = new ButtonEventLogger(this, new StandardLogWriter("button_event", outputFolder, false, timeOffset));
+			buttonEventLogger = new ButtonEventLogger(this, new ASyncLogWriter("button_event", outputFolder, false, timeOffset));
 			if (isCombined) buttonEventLogger.setLogWriter(combinedWriter);
 			buttonEventLogger.setTimeOffset(timeOffset);
 			buttonEventLogger.start();
 		}
 		
 		if(voice){
-			voiceLogger = new VoiceLogger(this, new StandardLogWriter("voice", outputFolder, false, timeOffset), outputFolder, "voice");
+			voiceLogger = new VoiceLogger(this, new ASyncLogWriter("voice", outputFolder, false, timeOffset), outputFolder, "voice");
 			if(isCombined) voiceLogger.setLogWriter(combinedWriter);
 			voiceLogger.setTimeOffset(timeOffset);
 			voiceLogger.start();
@@ -302,13 +301,13 @@ public class SamplerService extends Service {
 		}
 		
 		if(mapGroundTruth){
-			mapGroundTruthLogger = new MapGroundTruthLogger(this, new StandardLogWriter("map_ground_truth", outputFolder, false, timeOffset));
+			mapGroundTruthLogger = new MapGroundTruthLogger(this, new ASyncLogWriter("map_ground_truth", outputFolder, false, timeOffset));
 			if (isCombined) mapGroundTruthLogger.setLogWriter(combinedWriter);
 			mapGroundTruthLogger.setTimeOffset(timeOffset);
 			mapGroundTruthLogger.start();
 		}
 		if(deviceInfo){
-			deviceInfoLogger = new DeviceInfoLogger(this, new StandardLogWriter("device_info", outputFolder, false, timeOffset));
+			deviceInfoLogger = new DeviceInfoLogger(this, new ASyncLogWriter("device_info", outputFolder, false, timeOffset));
 			if(isCombined) deviceInfoLogger.setLogWriter(combinedWriter);
 			deviceInfoLogger.start();
 		}

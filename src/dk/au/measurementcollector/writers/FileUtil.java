@@ -8,15 +8,15 @@ package dk.au.measurementcollector.writers;
  * 
  * @author Christian Melchior
  */
+
+import android.util.Log;
+import dk.au.measurementcollector.Toaster;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import dk.au.measurementcollector.Toaster;
-
-import android.os.Environment;
-import android.util.Log;
+import java.util.Collection;
 
 public class FileUtil {
 
@@ -62,6 +62,22 @@ public class FileUtil {
 			}
 		}
 	}
+
+    public static void writeToLog(Collection<String> logData,
+                                  BufferedWriter file) {
+        if (file == null)
+            return;
+        synchronized (file) {
+            try {
+                for (String s : logData) {
+                    file.write(s);
+                }
+                file.flush();
+            } catch (IOException e) {
+                Toaster.showToast("Could not write to file " + e.getMessage());
+            }
+        }
+    }
 
 	/**
 	 * Close log file
