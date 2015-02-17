@@ -8,6 +8,10 @@ package dk.au.measurementcollector;
  */
 import java.io.File;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +23,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager.OnActivityResultListener;
+import android.util.Log;
 
 public class CollectorPreferencesActivity extends PreferenceActivity {
 
@@ -42,6 +47,7 @@ public class CollectorPreferencesActivity extends PreferenceActivity {
 	public static final String LOGGING_MAP_GROUND_TRUTH = "mapGroundTruth";
 	public static final String LOGGING_DEVICE_INFO = "deviceInfo";
 	public static final String OUTPUT_FOLDER = "output_folder";
+	public static final String LOGGING_ACTIVITY = "activity";
 	
 	public static final String SAMPLERATE_SYNCHED = "shared_interval";
 	public static final String SAMPLERATE_LOCATION = "samplerate_location";
@@ -143,7 +149,34 @@ public class CollectorPreferencesActivity extends PreferenceActivity {
 		});
         
         
+        final Preference button = (Preference) getPreferenceScreen().findPreference("servicesButton");
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				boolean play = checkGooglePlayServices(CollectorPreferencesActivity.this);
+				if(play)
+					button.setSummary("Play services OK!");
+				else 
+					button.setSummary("Play services not found!");
+				Log.d("PlayServices", "Checked for services, found: " + play);
+				return true;
+			}
+		});
+        
+        
 	}	
+	
+	
+	public static boolean checkGooglePlayServices(Activity activity) {
+	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+	    if (resultCode != ConnectionResult.SUCCESS) {
+	        if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+	            GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
+	        }
+	        return false;
+	    }
+	    return true;
+	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		

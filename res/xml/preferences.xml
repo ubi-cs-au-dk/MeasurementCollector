@@ -127,7 +127,7 @@
 			android:disableDependentsState="false" 
 			android:key="magnetometer" 
 			android:title="Magnetometer" 
-			android:defaultValue="true"
+			android:defaultValue="false"
 			android:summaryOn="Logs magnetometer data" />
 
 	<CheckBoxPreference 
@@ -160,6 +160,17 @@
 			android:key="samplerate_sensor" 
 			android:defaultValue="0" 
 			android:numeric="integer" />
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Activity">
+    <CheckBoxPreference 
+			android:summaryOff="Activity recognition turned off" 
+			android:disableDependentsState="false" 
+			android:key="activity" 
+			android:title="Activity" 
+			android:defaultValue="true"
+			android:summaryOn="Logs Activity Recognition data" />
+    <Preference android:title="Check Play Services" android:key="servicesButton" android:summary="Check for google play services"/>
 </PreferenceCategory>
 
 <PreferenceCategory android:title="User driven">

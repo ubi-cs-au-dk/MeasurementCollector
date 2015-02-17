@@ -13,10 +13,14 @@ import java.util.Comparator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -84,7 +88,7 @@ public class Controller extends Activity implements ServiceConnection {
 		Button sendData = (Button) findViewById(R.id.SendButton);
 		sendData.setOnClickListener(sendListener);
 		
-		contentView = findViewById(R.id.contentlayout);
+		contentView = findViewById(R.id.contentlayout);		
 	}
 
 	private View.OnClickListener timestampListener = new OnClickListener() {

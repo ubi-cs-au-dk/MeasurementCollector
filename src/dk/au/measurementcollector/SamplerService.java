@@ -4,6 +4,7 @@ package dk.au.measurementcollector;
  * TODO Do initialization in separate loggers?
  */
 import dk.au.measurementcollector.loggers.AccelerometerLogger;
+import dk.au.measurementcollector.loggers.ActivityRecognitionLogger;
 import dk.au.measurementcollector.loggers.ButtonEventLogger;
 import dk.au.measurementcollector.loggers.DeviceInfoLogger;
 import dk.au.measurementcollector.loggers.GPSLogger;
@@ -18,6 +19,7 @@ import dk.au.measurementcollector.loggers.VoiceLogger;
 import dk.au.measurementcollector.loggers.WifiLogger;
 import dk.au.measurementcollector.writers.LogWriter;
 import dk.au.measurementcollector.writers.StandardLogWriter;
+import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -43,6 +45,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 public class SamplerService extends Service {
 
 	private static final String LOG_TAG ="SamplerService";
@@ -63,6 +68,7 @@ public class SamplerService extends Service {
     private Vibrator vibrator;
     private DeviceInfoLogger deviceInfoLogger;
     private GyroscopeLogger gyroscopeLogger;
+    private ActivityRecognitionLogger activityLogger;
     
     SharedPreferences preferences;
 	
@@ -140,6 +146,14 @@ public class SamplerService extends Service {
 		boolean vibratorOn = preferences.getBoolean(CollectorPreferencesActivity.VIBRATOR, false);
 		boolean deviceInfo = preferences.getBoolean(CollectorPreferencesActivity.LOGGING_DEVICE_INFO, false);
 		boolean gyroscope = preferences.getBoolean(CollectorPreferencesActivity.LOGGING_GYROSCOPE, false);
+		boolean activity = preferences.getBoolean(CollectorPreferencesActivity.LOGGING_ACTIVITY, false);
+		
+		boolean playServices = checkGooglePlayServices(this);
+		if(activity && !playServices){
+			Log.d("PlayServices", "Play services not found!");
+			Toaster.showToast("Play services not up to date!");
+			activity = false;
+		}
 			
 		String folderPref = preferences.getString(CollectorPreferencesActivity.OUTPUT_FOLDER, "");
 		File outputFolder = folderPref.equals("") ? Environment.getExternalStorageDirectory() : new File(folderPref);
@@ -240,6 +254,14 @@ public class SamplerService extends Service {
 			gyroscopeLogger.setTimeOffset(timeOffset);
 			gyroscopeLogger.start();			
 		}
+		
+		if (activity) {
+			activityLogger = new ActivityRecognitionLogger(this, new StandardLogWriter("sensor_activity", outputFolder, false, timeOffset));
+			if (isCombined) activityLogger.setLogWriter(combinedWriter);
+			activityLogger.setSampleRate(0);
+			activityLogger.setTimeOffset(timeOffset);
+			activityLogger.start();			
+		}
 
 		if (orientation) {
 			orientationLogger = new OrientationLogger(this, new StandardLogWriter("sensor_orientation", outputFolder, false, timeOffset));
@@ -296,6 +318,14 @@ public class SamplerService extends Service {
 		for(SamplingStartedListener l : startedListeners){
 			l.notifySamplingStarted();
 		}
+	}
+	
+	public static boolean checkGooglePlayServices(Context context) {
+	    int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+	    if (resultCode != ConnectionResult.SUCCESS) {
+	        return false;
+	    }
+	    return true;
 	}
 	
 	public void logButtonEvent(String event){
@@ -401,6 +431,7 @@ public class SamplerService extends Service {
 				voiceLogger.stop();
 				HandsetButtonReceiver.removeListener(buttonListener);
 			}
+			if(activityLogger != null) activityLogger.stop();
 			if(deviceInfoLogger != null) deviceInfoLogger.stop();
 			Log.d("WAG", "Gyroscope logging stopped7");
 			Toaster.showToast("Sampling stopped");
